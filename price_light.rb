@@ -25,8 +25,8 @@ module PriceLight
 
   # evaluate brightness from volume relative to average volume over last three
   # months (average = 0.5)
-  def evaluate_brightness(volume, average_volume=AVERAGE_VOLUME)
-    vol_change = (volume - average_volume) / average_volume
+  def evaluate_brightness(volume, avg_vol=AVERAGE_VOLUME)
+    vol_change = (volume - avg_vol) / avg_vol
     if vol_change < 0
       brightness = [0, 1 - vol_change.abs / VOL_CHANGE_LIMIT].max * 0.5
     elsif vol_change > 0
@@ -36,10 +36,34 @@ module PriceLight
     end
   end
 
+  # extract scene array from quotes
   def generate_data_arrays(symbol, start_date, end_date)
-    quote = StockQuote::Stock.history(symbol, start_date, end_date)
-    vol_array = quote.map(&:volume)
-    avg_volume = vol_array.inject(0.0) { |sum, el| sum + el } / vol_array.size
-    change_array = quote.map { |q| (q.close - q.open) / q.open }
+    # get quotes
+    quotes = StockQuote::Stock.history(symbol, start_date, end_date)
+    scenes = []
+
+    # process quotes to get data
+    quotes.each do |quote|
+      # check for valid response
+      if quote.response_code == 200
+        scene = {}
+        scene[:vol] = quote.volume
+        scene[:change] = (quote.close - quote.open) / quote.open
+        scenes << scene
+      end
+    end
+
+    # evaluate average
+    vol_array = scenes.map(&:vol)
+    avg_vol = vol_array.inject(0.0) { |sum, el| sum + el } / vol_array.size
+
+    data = { scenes: scenes, avg_vol: avg_vol }
   end
+
+  # process scene data and output color
+  def set_scene(scene, avg_vol)
+    color = evaluate_color(scene[:change])
+    color.brightness = evaluate_brightness(scene[:vol], avg_vol)
+  end
+
 end
