@@ -1,2 +1,27 @@
-h1 Price Light
-p This app controls the hue and brightness of a Hue bulb (or series of bulbs) based on a time-series of stock price (relative change and volume)
+.row
+  .twelve.columns[style="margin-top: 25%"]
+    h1 Price Light
+    p This app controls the hue and brightness of a Hue bulb (or series of bulbs) based on a time-series of stock price (relative change and volume)
+
+form action='/' method='POST'
+  .row
+    .six.columns
+      label[for='light_one'] Light One Label
+      input.u-full-width type='text' name='light_one'
+      label[for='quote_one'] Symbol One
+      input.u-full-width type='text' name='quote_one'
+    .six.columns
+      label[for='light_two'] Light Two Label
+      input.u-full-width type='text' name='light_two'
+      label[for='quote_two'] Symbol Two
+      input.u-full-width type='text' name='quote_two'
+  .row
+    .one.column
+    .ten.columns
+      label[for='start_date'] Start Date (e.g. 2014-01-01)
+      input.u-full-width type='text' name='start_date'
+      label[for='end_date'] End Date
+      input.u-full-width type='text' name='end_date'
+      input.button.btn-primary type='submit' value='QUOTE'
+
+

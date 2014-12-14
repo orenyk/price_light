@@ -1,4 +1,5 @@
 require 'sinatra'
+require "sinatra/reloader" if development?
 require 'slim'
 require 'pry'
 
@@ -11,6 +12,12 @@ include PriceLight
 get '/' do
   @title = 'Home'
   slim :index, :locals => { title: @title }
+end
+
+post '/' do
+  binding.pry
+  @light_one = params[:light_one]
+  redirect to("/#{@light_one}/quote/aapl/2014-01-01/2014-02-01")
 end
 
 get '/:light/quote/:symbol/:start_date/:end_date' do
