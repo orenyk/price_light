@@ -6,6 +6,7 @@ module PriceLight
   CHANGE_LIMIT = 0.10
   AVERAGE_VOLUME = 1000000
   VOL_CHANGE_LIMIT = 0.30
+  FPS = 20
 
   # extract color from relative change in stock price
   def evaluate_color(change)
@@ -54,7 +55,7 @@ module PriceLight
     end
 
     # evaluate average
-    vol_array = scenes.map(&:vol)
+    vol_array = scenes.map { |scene| scene[:vol] }
     avg_vol = vol_array.inject(0.0) { |sum, el| sum + el } / vol_array.size
 
     data = { scenes: scenes, avg_vol: avg_vol }
@@ -64,6 +65,16 @@ module PriceLight
   def set_scene(scene, avg_vol)
     color = evaluate_color(scene[:change])
     color.brightness = evaluate_brightness(scene[:vol], avg_vol)
+    color
+  end
+
+  # method to loop through a scene array and talk to a bulb
+  def process_scenes(light, data)
+    pause = 60/FPS
+    data[:scenes].each do |scene|
+      light.set_color(set_scene(scene, data[:avg_vol]))
+      sleep 1
+    end
   end
 
 end
