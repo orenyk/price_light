@@ -41,3 +41,5 @@ module PriceLight
     vol_array = quote.map(&:volume)
     avg_volume = vol_array.inject(0.0) { |sum, el| sum + el } / vol_array.size
     change_array = quote.map { |q| (q.close - q.open) / q.open }
+  end
+end
