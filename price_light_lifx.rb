@@ -1,7 +1,7 @@
 require 'lifx'
 require 'stock_quote'
 
-module PriceLight
+module PriceLightLifx
 
   CHANGE_LIMIT = 0.10
   AVERAGE_VOLUME = 1000000

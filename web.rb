@@ -6,8 +6,8 @@ require 'pry'
 require 'lifx'
 require 'stock_quote'
 
-load './price_light.rb'
-include PriceLight
+load './price_light_lifx.rb'
+include PriceLightLifx
 
 get '/' do
   @title = 'Home'
