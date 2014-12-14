@@ -8,7 +8,10 @@ gem 'thin'
 gem 'slim'
 
 # Philips Hue
-gem 'hue'
+# gem 'hue'
+
+# LIFX
+gem 'lifx', git: 'https://github.com/LIFX/lifx-gem', branch: 'master'
 
 # stock price (via Yahoo)
 gem 'stock_quote'
