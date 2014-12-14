@@ -2,5 +2,11 @@ doctype html
 html
   head
     title = title.nil? ? "Price Light" : "#{title} | Price Light"
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
   body
-    == yield
+    .container
+      .row
+        .one-half.column[style="margin-top: 25%"]
+          == yield
