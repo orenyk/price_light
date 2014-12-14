@@ -29,9 +29,9 @@ module PriceLight
   def evaluate_brightness(volume, avg_vol=AVERAGE_VOLUME)
     vol_change = (volume - avg_vol) / avg_vol
     if vol_change < 0
-      brightness = [0, 1 - vol_change.abs / VOL_CHANGE_LIMIT].max * 0.5
+      brightness = [0.25, 1 - vol_change.abs / VOL_CHANGE_LIMIT].max * 0.5
     elsif vol_change > 0
-      brightness = [1, vol_change / VOL_CHANGE_LIMIT].min * 0.5
+      brightness = [0.75, vol_change / VOL_CHANGE_LIMIT].min * 0.5
     else
       brightness = 0.5
     end
@@ -69,10 +69,12 @@ module PriceLight
   end
 
   # method to loop through a scene array and talk to a bulb
-  def process_scenes(light, data)
-    pause = 60/FPS
-    data[:scenes].each do |scene|
-      light.set_color(set_scene(scene, data[:avg_vol]))
+  def process_scenes(light1, data1, light2=nil, data2=nil)
+    for i in 0..data1[:scenes].length-1
+      light1.set_color(set_scene(data1[:scenes][i], data1[:avg_vol]))
+      if light2 && data2
+        light2.set_color(set_scene(data2[:scenes][i], data2[:avg_vol]))
+      end
       sleep 1
     end
   end

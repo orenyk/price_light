@@ -15,9 +15,29 @@ get '/' do
 end
 
 post '/' do
-  binding.pry
   @light_one = params[:light_one]
-  redirect to("/#{@light_one}/quote/aapl/2014-01-01/2014-02-01")
+  @symbol_one = params[:symbol_one]
+  @light_two = params[:light_two]
+  @symbol_two = params[:symbol_two]
+  @start_date = params[:start_date]
+  @end_date = params[:end_date]
+  data1 = generate_data_arrays(@symbol_one, @start_date, @end_date)
+  data2 = generate_data_arrays(@symbol_two, @start_date, @end_date)
+  client = LIFX::Client.lan
+  unless @light_two.nil?
+    client.discover! { |c| c.lights.count == 2}
+  else
+    client.discover!
+  end
+  process_scenes(
+    client.lights.with_label(@light_one), data1,
+    client.lights.with_label(@light_two), data2)
+  redirect to("/quote")
+end
+
+get '/quote' do
+  @title = "Price Light"
+  slim 'quote complete', :locals => { title: @title }
 end
 
 get '/:light/quote/:symbol/:start_date/:end_date' do
