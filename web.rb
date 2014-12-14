@@ -37,7 +37,7 @@ end
 
 get '/quote' do
   @title = "Price Light"
-  slim 'quote complete', :locals => { title: @title }
+  slim :quotes, :locals => { title: @title }
 end
 
 get '/:light/quote/:symbol/:start_date/:end_date' do

@@ -29,9 +29,9 @@ module PriceLight
   def evaluate_brightness(volume, avg_vol=AVERAGE_VOLUME)
     vol_change = (volume - avg_vol) / avg_vol
     if vol_change < 0
-      brightness = [0.25, 1 - vol_change.abs / VOL_CHANGE_LIMIT].max * 0.5
+      brightness = [0.1, 1 - vol_change.abs / VOL_CHANGE_LIMIT].max * 0.5
     elsif vol_change > 0
-      brightness = [0.75, vol_change / VOL_CHANGE_LIMIT].min * 0.5
+      brightness = [0.9, vol_change / VOL_CHANGE_LIMIT].min * 0.5
     else
       brightness = 0.5
     end
@@ -75,7 +75,7 @@ module PriceLight
       if light2 && data2
         light2.set_color(set_scene(data2[:scenes][i], data2[:avg_vol]))
       end
-      sleep 1
+      sleep 2
     end
   end
 
