@@ -12,3 +12,6 @@ gem 'hue'
 
 # stock price (via Yahoo)
 gem 'stock_quote'
+
+gem 'pry'
+gem 'pry-byebug'
