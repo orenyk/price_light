@@ -48,3 +48,17 @@ get '/:light/quote/:symbol/:start_date/:end_date' do
   process_scenes(client.lights.with_label(params[:light]), data)
   slim :quote, :locals => { title: @title, symbol: params[:symbol] }
 end
+
+# TODO write form and view
+get '/menorah' do
+  @title = 'Menorah'
+  slim :menorah, :locals => { title: @title }
+end
+
+post '/menorah' do
+  client = LIFX::Client.lan
+  client.discover! { |c| c.lights.count == 8 }
+  for i in 1..8 do
+    client.lights.with_label("menorah#{i}").set_color(LIFX::Color.rgb(255, 102, 0)) if params["menorah#{i}".to_sym] == 1
+  end
+end
